@@ -8,9 +8,24 @@ const quoteText = document.getElementById("quote");
 const quoteAuthor = document.getElementById("author");
 const tweetBtn = document.getElementById("twitterBtn");
 const refreshQuoteBtn = document.getElementById("refreshQuote");
+const loaderBox = document.getElementById("loader-box");
+const quoteBox = document.getElementById("quote-box");
+
+// Show Function
+function loading() {
+  loaderBox.style.display = "block";
+  quoteBox.style.display = "none";
+}
+
+// Hide Loading
+function complete() {
+  loaderBox.style.display = "none";
+  quoteBox.style.display = "block";
+}
 
 // Getting Date from API
 async function getQuotes() {
+  loading();
   try {
     const response = await fetch(API_URL, {
       headers: {
@@ -22,6 +37,7 @@ async function getQuotes() {
     quoteAuthor
       ? (quoteAuthor.textContent = quoteArr[0].author)
       : (quoteAuthor.textContent = "Unknown");
+    complete();
     // console.log(quoteArr);
     // console.log(quoteArr[0].quote);
     // // console.log(quoteArr[0].author);
@@ -41,3 +57,5 @@ refreshQuoteBtn.addEventListener("click", getQuotes);
 tweetBtn.addEventListener("click", tweetQuote);
 
 getQuotes();
+
+loading();
